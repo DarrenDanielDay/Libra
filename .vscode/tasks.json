@@ -1,0 +1,25 @@
+/**
+ * Copyright (C) 2022  DarrenDanielDay <Darren_Daniel_Day@hotmail.com>
+ *
+ * This source code is licensed under the GPL-3.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"isBackground": true,
+			"label": "tsc: watch - tsconfig.json"
+		}
+	]
+}

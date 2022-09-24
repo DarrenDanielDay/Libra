@@ -1,0 +1,26 @@
+{
+  "name": "libra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node out/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DarrenDanielDay/Libra.git"
+  },
+  "author": {
+    "email": "Darren_Daniel_Day@hotmail.com",
+    "name": "Darren Daniel Day",
+    "url": "https://github.com/DarrenDanielDay"
+  },
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/DarrenDanielDay/Libra/issues"
+  },
+  "homepage": "https://github.com/DarrenDanielDay/Libra#readme",
+  "devDependencies": {
+    "typescript": "^4.8.3"
+  }
+}
