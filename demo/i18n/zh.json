@@ -1,0 +1,17 @@
+{
+  "$schema": "./schema.json",
+  "app.description": "一个称次品问题的求解模型",
+  "actions.confirm": "确认",
+  "actions.clear": "清空",
+  "actions.back": "返回上层",
+  "label.count": "产品总数",
+  "label.diff": "次品偏差",
+  "diff.heavier": "偏重",
+  "diff.unknown": "未知（两者）",
+  "diff.lighter": "偏轻",
+  "label.times": "最大称量次数",
+  "info.choose": "如果这样称，结果会如何？",
+  "info.no.solution": "无法找到覆盖所有情况的策略。",
+  "info.impossible": "这不可能！",
+  "info.conclution": "次品是P{bad}，它与其他产品相比{diff}。"
+}

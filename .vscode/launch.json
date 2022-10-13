@@ -11,6 +11,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Edge",
+      "request": "launch",
+      "type": "msedge",
+      "url": "http://localhost:10230",
+      "webRoot": "${workspaceFolder}/demo"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Launch Program",

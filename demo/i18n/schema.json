@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "type": "object",
+  "properties": {
+    "app.description": { "type": "string" },
+    "actions.confirm": { "type": "string" },
+    "actions.clear": { "type": "string" },
+    "actions.back": { "type": "string" },
+    "label.count": { "type": "string" },
+    "label.diff": { "type": "string" },
+    "diff.lighter": { "type": "string" },
+    "diff.unknown": { "type": "string" },
+    "diff.heavier": { "type": "string" },
+    "label.times": { "type": "string" },
+    "info.choose": { "type": "string" },
+    "info.no.solution": { "type": "string" },
+    "info.impossible": { "type": "string" },
+    "info.conclution": { "type": "string" }
+  }
+}
