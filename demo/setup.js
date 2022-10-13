@@ -3,8 +3,8 @@
 const query = new URL(location.href);
 const cdnRoot = query.searchParams.get("cdn");
 const registry = query.searchParams.get("regostry");
-const react = ESModularize.load("https://unpkg.com/react@18.2.0/umd/react.development.js").sync().umd("React");
-const reactDOM = ESModularize.load("https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js")
+const react = ESModularize.load("https://unpkg.com/react@18.2.0/umd/react.production.min.js").sync().umd("React");
+const reactDOM = ESModularize.load("https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js")
   .sync()
   .umd("ReactDOM");
 if (!react || !reactDOM) {
