@@ -34,4 +34,4 @@ async function runCase(n: number, k: number, differences: DefectiveDifference[])
   await promisify(exec)("npm run clear");
   await runCase(12, 3, unknownDifferences);
   await runCase(9, 2, [Difference.Lighter]);
-})()
+})();

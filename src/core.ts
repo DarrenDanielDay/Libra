@@ -6,12 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { Difference, NodeType, Product, TreeNode, Strategy, Case, WeighResult, DefectiveDifference } from "./defs";
-import { cases, weigh } from "./utils";
+import { cases, products, weigh } from "./utils";
 
 export function* findSolution(n: number, k: number, diffectiveDifferences: DefectiveDifference[]): Generator<TreeNode> {
-  const hasLighter = diffectiveDifferences.includes(Difference.Lighter);
-  const hasHeavier = diffectiveDifferences.includes(Difference.Heavier);
-  function* generateFor(restCases: Case[], restK: number, qualified: Product[]): Generator<TreeNode> {
+  const allProducts = products(n);
+  function* generateFor(restCases: Case[], restK: number): Generator<TreeNode> {
     const aggregatedCases = aggregateCases(restCases);
     const { length } = restCases;
     if (length === 0) {
@@ -31,36 +30,30 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
     if (restK === 0) {
       return;
     }
+    if (restCases.length > 3 ** restK) {
+      return;
+    }
     const nextK = restK - 1;
     const maxCaseCoverCount = 3 ** nextK;
-
     const possibleLighter: Product[] = [];
     const possibleHeavier: Product[] = [];
     const unWeighed: Product[] = [];
-    const possibleCases: Case[] = [];
-    for (const [product, difference] of restCases) {
+    const pendingQualified = new Set(allProducts);
+    for (const [product, difference] of aggregatedCases) {
       switch (difference) {
         case Difference.Lighter:
-          if (hasLighter) {
-            possibleLighter.push(product);
-            possibleCases.push([product, difference]);
-          } else {
-            qualified.push(product);
-          }
+          possibleLighter.push(product);
           break;
         case Difference.Heavier:
-          if (hasHeavier) {
-            possibleHeavier.push(product);
-            possibleCases.push([product, difference]);
-          } else {
-            qualified.push(product);
-          }
+          possibleHeavier.push(product);
+          break;
+        default:
+          unWeighed.push(product);
           break;
       }
+      pendingQualified.delete(product);
     }
-    if (possibleCases.length > 3 ** restK) {
-      return;
-    }
+    const qualified = [...pendingQualified];
     const lighterCount = possibleLighter.length;
     const heavierCount = possibleHeavier.length;
     const unWeighedCount = unWeighed.length;
@@ -99,7 +92,7 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
           const leftResults: Case[] = [];
           const rightResults: Case[] = [];
           const balanceResults: Case[] = [];
-          for (const possibleCase of possibleCases) {
+          for (const possibleCase of restCases) {
             switch (weigh(possibleCase, strategy)) {
               case WeighResult.Balance:
                 balanceResults.push(possibleCase);
@@ -139,7 +132,7 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
                 newQualified.push(right);
               }
             }
-            for (const node of generateFor(leftResults, nextK, newQualified)) {
+            for (const node of generateFor(leftResults, nextK)) {
               yield node;
             }
           })();
@@ -160,7 +153,7 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
                 newQualified.push(right);
               }
             }
-            for (const node of generateFor(rightResults, nextK, newQualified)) {
+            for (const node of generateFor(rightResults, nextK)) {
               yield node;
             }
           })();
@@ -171,17 +164,20 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
               return;
             }
             const newQualified = [...qualified, ...Lefts, ...Rights];
-            for (const node of generateFor(balanceResults, nextK, newQualified)) {
+            for (const node of generateFor(balanceResults, nextK)) {
               yield node;
             }
           })();
           for (const left of lefts) {
             for (const right of rights) {
               for (const balance of balances) {
+                if (!(left || right || balance)) {
+                  continue;
+                }
                 yield {
                   type: NodeType.Strategy,
                   strategy,
-                  cases: possibleCases,
+                  cases: restCases,
                   children: {
                     [WeighResult.Left]: left,
                     [WeighResult.Balance]: balance,
@@ -195,7 +191,9 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
       }
     }
   }
-  yield* generateFor(cases(n, diffectiveDifferences), k, []);
+  const allCases = cases(allProducts, diffectiveDifferences);
+  const greedyLeastK = Math.ceil(Math.log(allCases.length) / Math.log(3));
+  yield* generateFor(allCases, Math.min(k, greedyLeastK));
 }
 
 /**

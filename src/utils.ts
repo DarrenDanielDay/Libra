@@ -34,13 +34,13 @@ export function inverse(w: WeighResult): WeighResult {
 }
 
 export function products(n: number): Product[] {
-  return Array.from({ length: n }, (_, i) => i);
+  return Array.from({ length: n }, (_, i) => i + 1);
 }
 
 export const unknownDifferences: DefectiveDifference[] = [Difference.Heavier, Difference.Lighter];
 
-export function cases(n: number, differences: DefectiveDifference[] = unknownDifferences) {
-  return products(n).flatMap((bad) => differences.map<Case>((d) => [bad, d]));
+export function cases(products: Product[], differences: DefectiveDifference[] = unknownDifferences) {
+  return products.flatMap((bad) => differences.map<Case>((d) => [bad, d]));
 }
 
 export function weigh(enumerated: Case, strategy: Strategy): WeighResult {
