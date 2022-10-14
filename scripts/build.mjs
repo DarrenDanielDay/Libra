@@ -8,7 +8,8 @@
 import * as esbuild from "esbuild";
 import { readFile } from "fs/promises";
 const isDev = process.argv.includes("--dev");
-await esbuild.build({
+/** @type {esbuild.BuildOptions} */
+const sharedConfig = {
   entryPoints: ["./demo/index.tsx"],
   plugins: [
     {
@@ -33,4 +34,15 @@ await esbuild.build({
   format: "esm",
   external: ["react", "react-dom", "*.json"],
   outfile: "./demo/index.js",
-});
+};
+// build for import map
+await esbuild.build(sharedConfig);
+
+if (!isDev) {
+  // build for no import map support browser
+  await esbuild.build({
+    ...sharedConfig,
+    external: [],
+    outfile: "./demo/index.noimportmap.js",
+  });
+}
