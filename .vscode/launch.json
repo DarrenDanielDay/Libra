@@ -22,8 +22,8 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "preLaunchTask": "tsc: watch - tsconfig.json",
-      "program": "${workspaceFolder}\\out\\index.js",
+      "preLaunchTask": "tsc: watch - tsconfig.dev.json",
+      "program": "${workspaceFolder}\\out\\src\\index.js",
       "outFiles": ["${workspaceFolder}/**/*.js"],
       "sourceMaps": true,
       "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"]

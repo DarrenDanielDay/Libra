@@ -1,12 +1,19 @@
+/**
+ * @license GPL-3.0-or-later
+ * Copyright (C) 2022  DarrenDanielDay <Darren_Daniel_Day@hotmail.com>
+ *
+ * This source code is licensed under the GPL-3.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { findSolution } from "../src/core";
-import { DefectiveDifference, Difference, NodeType, Strategy, TreeNode, WeighResult } from "../src/defs";
-import { cases, ConnectedTreeNode, connectParent, TestTree } from "../src/utils";
+import { DefectiveDifference, Difference, NodeType, Strategy, WeighResult } from "../src/defs";
+import { ConnectedTreeNode, connectParent } from "../src/utils";
 import { BalanceSVG } from "./balance-scale";
 import { LeftSVG } from "./balance-scale-left";
 import { RightSVG } from "./balance-scale-right";
-
+import "./style.css";
 //#region Start up
 const url = new URL(location.href);
 const params = url.searchParams;
@@ -147,42 +154,59 @@ const Conditions: React.FC<{
 //#endregion
 //#region Products Group
 const ProductGroup: React.FC<{ products: number[] }> = ({ products }) => (
-  <div className="balance-items">
+  <div className="products">
     {products.map((product, i) => (
       <React.Fragment key={i}>
         {!!i && <code>+</code>}
-        <span className="balance-item">P{product}</span>
+        <span className="product">P{product}</span>
       </React.Fragment>
     ))}
   </div>
 );
 //#endregion
+
+//#region Compare component
+export const Compare: React.FC<{
+  lefts: Iterable<number>;
+  rights: Iterable<number>;
+  comparator: string;
+}> = React.memo(({ lefts: [...lefts], rights: [...rights], comparator }) => {
+  return (
+    <div className="compare">
+      <ProductGroup products={lefts}></ProductGroup>
+      <code>{comparator}</code>
+      <ProductGroup products={rights}></ProductGroup>
+    </div>
+  );
+});
+//#endregion
+
 //#region Strategy Tree component
 const diffText = {
   [Difference.Lighter]: i18n["diff.lighter"],
   [Difference.Heavier]: i18n["diff.heavier"],
 };
-const weighResultMapping: Record<
-  WeighResult,
+const weighResultOptions: {
+  svg: JSX.Element;
+  result: WeighResult;
+  position: string;
+}[] = [
   {
-    svg: JSX.Element;
-    result: WeighResult;
-  }
-> = {
-  [WeighResult.Right]: {
     svg: LeftSVG,
     result: WeighResult.Right,
+    position: "left",
   },
-  [WeighResult.Balance]: {
+  {
     svg: BalanceSVG,
     result: WeighResult.Balance,
+    position: "middle",
   },
-  [WeighResult.Left]: {
+  {
     svg: RightSVG,
     result: WeighResult.Left,
+    position: "right",
   },
-};
-const weighResultOptions = Object.values(weighResultMapping);
+];
 const RenderNode: React.FC<{
   node: ConnectedTreeNode;
   move(next: ConnectedTreeNode | false): void;
@@ -201,13 +225,15 @@ const RenderNode: React.FC<{
       )}
     </div>
   );
+  const renderNode = (child: React.ReactNode, info: string, type: string) => (
+    <div className={`${type} node`}>
+      <p className="info">{info}</p>
+      {child}
+      {back}
+    </div>
+  );
   if (node.type == null) {
-    return (
-      <div className="null-node">
-        <p>{i18n["info.impossible"]}</p>
-        {back}
-      </div>
-    );
+    return renderNode(null, i18n["info.impossible"], "null");
   }
   if (node.type === NodeType.Conclusion) {
     const [bad, diff] = node.enumerated;
@@ -215,29 +241,23 @@ const RenderNode: React.FC<{
       bad,
       diff: diffText[diff],
     };
-    return (
-      <div className="conclusion-node">
-        <p>{i18n["info.conclution"].replace(/\{(.+?)\}/g, (_, prop) => Reflect.get(context, prop))}</p>
-        {back}
-      </div>
+    return renderNode(
+      null,
+      i18n["info.conclution"].replace(/\{(.+?)\}/g, (_, prop) => Reflect.get(context, prop)),
+      "conclusion"
     );
   }
   const {
     strategy: [[...lefts], [...rights]],
   } = node;
 
-  return (
-    <div className="strategy-node">
-      <p>{i18n["info.choose"]}</p>
-      <div className="strategy">
-        <ProductGroup products={lefts}></ProductGroup>
-        <span>vs</span>
-        <ProductGroup products={rights}></ProductGroup>
-      </div>
+  return renderNode(
+    <>
+      <Compare lefts={lefts} rights={rights} comparator="vs"></Compare>
       <div className="choices">
-        {weighResultOptions.map(({ svg, result }, i) => (
+        {weighResultOptions.map(({ svg, result, position }, i) => (
           <div
-            className="choice"
+            className={`choice ${position}`}
             key={i}
             onClick={() => {
               move(node.children[result]);
@@ -247,8 +267,9 @@ const RenderNode: React.FC<{
           </div>
         ))}
       </div>
-      {back}
-    </div>
+    </>,
+    i18n["info.choose"],
+    "choose"
   );
 };
 //#endregion
@@ -258,28 +279,23 @@ type WeighHistoryItem = {
   strategy: Strategy;
   result: WeighResult;
 };
+const compare = (result: WeighResult) => {
+  switch (result) {
+    case WeighResult.Left:
+      return "<";
+    case WeighResult.Right:
+      return ">";
+    default:
+      return "=";
+  }
+};
 const WeighHistory: React.FC<{
   records: WeighHistoryItem[];
 }> = ({ records }) => {
   return (
     <div className="weigh-history">
-      {records.map(({ strategy: [[...lefts], [...rights]], result: choice }, i) => (
-        <div key={i} className="history-item">
-          <ProductGroup products={lefts}></ProductGroup>
-          <code>
-            {(() => {
-              switch (choice) {
-                case WeighResult.Left:
-                  return "<";
-                case WeighResult.Right:
-                  return ">";
-                default:
-                  return "=";
-              }
-            })()}
-          </code>
-          <ProductGroup products={rights}></ProductGroup>
-        </div>
+      {records.map(({ strategy: [lefts, rights], result }, i) => (
+        <Compare key={i} lefts={lefts} rights={rights} comparator={compare(result)} />
       ))}
     </div>
   );

@@ -6,6 +6,8 @@
 out
 *.output.json
 demo/index.js
+demo/index.css
+demo/index.css.map
 demo/index.js.map
 # Logs
 logs

@@ -9,8 +9,7 @@
 	"tasks": [
 		{
 			"type": "typescript",
-			"tsconfig": "tsconfig.json",
-			"option": "watch",
+			"tsconfig": "./tsconfig.dev.json",
 			"problemMatcher": [
 				"$tsc-watch"
 			],
@@ -19,7 +18,7 @@
 				"isDefault": true
 			},
 			"isBackground": true,
-			"label": "tsc: watch - tsconfig.json"
+			"label": "tsc: watch - tsconfig.dev.json"
 		}
 	]
 }

@@ -1,4 +1,5 @@
 /**
+ * @license GPL-3.0-or-later
  * Copyright (C) 2022  DarrenDanielDay <Darren_Daniel_Day@hotmail.com>
  *
  * This source code is licensed under the GPL-3.0 license found in the
@@ -8,6 +9,8 @@ import { Difference, NodeType, Product, TreeNode, Strategy, Case, WeighResult, D
 import { cases, weigh } from "./utils";
 
 export function* findSolution(n: number, k: number, diffectiveDifferences: DefectiveDifference[]): Generator<TreeNode> {
+  const hasLighter = diffectiveDifferences.includes(Difference.Lighter);
+  const hasHeavier = diffectiveDifferences.includes(Difference.Heavier);
   function* generateFor(restCases: Case[], restK: number, qualified: Product[]): Generator<TreeNode> {
     const aggregatedCases = aggregateCases(restCases);
     const { length } = restCases;
@@ -15,7 +18,7 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
       return;
     }
     if (length === 1) {
-      const [[bad, difference]] = [...restCases];
+      const [[bad, difference]] = restCases;
       if (bad == null || difference == null) {
         throw new Error("Impossible");
       }
@@ -28,12 +31,13 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
     if (restK === 0) {
       return;
     }
+    const nextK = restK - 1;
+    const maxCaseCoverCount = 3 ** nextK;
+
     const possibleLighter: Product[] = [];
     const possibleHeavier: Product[] = [];
     const unWeighed: Product[] = [];
     const possibleCases: Case[] = [];
-    const hasLighter = diffectiveDifferences.includes(Difference.Lighter);
-    const hasHeavier = diffectiveDifferences.includes(Difference.Heavier);
     for (const [product, difference] of restCases) {
       switch (difference) {
         case Difference.Lighter:
@@ -67,13 +71,13 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
     const minAsideCount = n % 2;
     for (let asideCount = maxAsideCount; asideCount >= minAsideCount; asideCount -= 2) {
       const groupCount = (n - asideCount) / 2;
-      for (let [ll, lh, lu, lq] of breakInto<[number, number, number, number]>(
+      for (const [ll, lh, lu, lq] of breakInto<[number, number, number, number]>(
         groupCount,
         [0, 0, 0, 0],
         [lighterCount, heavierCount, unWeighedCount, qualifiedCount],
         0
       )) {
-        for (let [rl, rh, ru, rq] of breakInto<[number, number, number, number]>(
+        for (const [rl, rh, ru, rq] of breakInto<[number, number, number, number]>(
           groupCount,
           [0, 0, 0, 0],
           [lighterCount - ll, heavierCount - lh, unWeighedCount - lu, qualifiedCount - lq],
@@ -110,8 +114,6 @@ export function* findSolution(n: number, k: number, diffectiveDifferences: Defec
                 break;
             }
           }
-          const nextK = restK - 1;
-          const maxCaseCoverCount = 3 ** nextK;
           if ([leftResults, rightResults, balanceResults].some((results) => results.length > maxCaseCoverCount)) {
             // 如果任意一个结果分类内存在超过`3 ^ (k - 1)`种情况，则此划分策略不可能得出结论
             continue;

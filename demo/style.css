@@ -1,13 +1,21 @@
+/**
+ * @license GPL-3.0-or-later
+ * Copyright (C) 2022  DarrenDanielDay <Darren_Daniel_Day@hotmail.com>
+ *
+ * This source code is licensed under the GPL-3.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 body {
   --border-color: #e8e8eb;
-  --min-width: 15em;
+  --min-width: 32em;
   word-break: keep-all;
   margin: 0;
   padding: 0;
   font-size: 24px;
   min-width: var(--min-width);
+  line-height: 1.5em;
+  box-sizing: border-box;
 }
-
 .logo {
   width: 2em;
   height: 2em;
@@ -59,7 +67,7 @@ header > nav {
   min-width: fit-content;
 }
 main {
-  padding: 0.5em;
+  padding: 2em;
 }
 .condition label {
   margin-right: 0.5em;
@@ -68,44 +76,58 @@ main {
 .condition label::after {
   content: ":";
 }
-.balance-items {
+.products {
   display: inline-flex;
+  width: 50%;
+  flex-wrap: wrap;
+  flex-shrink: 1;
+  justify-content: center;
   align-items: center;
 }
-.balance-item {
+.product {
   display: inline-block;
+  box-sizing: border-box;
   border: 2px solid var(--border-color);
+  height: 2em;
   margin: 0.25em;
   border-radius: 4px;
   padding: 0.25em;
 }
 .choices {
-  display: inline-flex;
+  display: flex;
+  min-width: var(--min-width);
   justify-content: space-around;
-  width: 90%;
+  width: 100%;
+  height: 8em;
 }
-.choice {
+.choice:not(.middle) {
+  display: inline-flex;
+  justify-content: center;
+}
+.choice svg {
+  cursor: pointer;
   width: 192px;
   height: 192px;
-  cursor: pointer;
+  transition: all .3s ease-in-out;
 }
-.choice:hover svg {
+.choice svg:hover  {
   background-color: #ced4da;
 }
-.null-node,
-.strategy-node,
-.conclusion-node {
+.node {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
-.strategy {
+.null p.info, .conclusion p.info {
+  height: 12em;
+}
+.compare {
   display: flex;
-  margin: 2em 0;
-  justify-content: space-around;
-  width: 80%;
+  grid-template-columns: 1fr 2em 1fr;
   align-items: center;
+  justify-content: space-around;
+  width: 100%;
 }
 code {
   --color-fg-default: #24292f;
@@ -113,6 +135,7 @@ code {
   color: var(--color-fg-default);
   word-wrap: break-word;
   box-sizing: border-box;
+  line-height: 1em;
   padding: 0.2em 0.4em;
   margin: 0;
   background-color: var(--color-neutral-muted);
@@ -121,38 +144,34 @@ code {
 .weigh-history {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-around;
-  max-width: 100%;
-}
-.history-item {
-  display: flex;
   align-items: center;
+  justify-content: space-around;
 }
 /**
-The MIT License (MIT)
-
-Copyright (c) 2011-2022 Twitter, Inc.
-Copyright (c) 2011-2022 The Bootstrap Authors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
+ * @license MIT
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2011-2022 Twitter, Inc.
+ * Copyright (c) 2011-2022 The Bootstrap Authors
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 input {
   display: block;
   width: 100%;
@@ -176,6 +195,7 @@ input:focus {
   box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
 }
 select {
+  cursor: pointer;
   box-sizing: border-box;
   margin: 0;
   font-family: inherit;
@@ -226,29 +246,30 @@ option {
   border: 1px solid transparent;
   border-radius: 0.25rem;
 }
-/*
-The MIT License (MIT)
-
-Copyright (c) 2014 Call-Em-All
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
+/**
+ * @license MIT
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2014 Call-Em-All
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 button.submit {
   text-size-adjust: 100%;
   color-scheme: light;
@@ -280,7 +301,7 @@ button.submit {
   margin: 0px 0px 0px 16px;
 }
 
-button.submit:hover {
+button.submit:hover, button.submit:focus {
   text-decoration: none;
   background-color: #1565c0;
   box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
@@ -314,7 +335,7 @@ button.reset {
   color: #1976d2;
   margin: 0px 0px 0px 16px;
 }
-button.reset:hover {
+button.reset:hover, button.reset:hover {
   text-decoration: none;
   background-color: rgba(25, 118, 210, 0.04);
   border: 1px solid #1976d2;

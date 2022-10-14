@@ -2,16 +2,15 @@
   "name": "libra",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
   "scripts": {
-    "dev": "tsc -w",
-    "start": "node out/index.js",
+    "dev": "tsc -p ./tsconfig.dev.json",
+    "clear": "rm ./*.output.json",
+    "start": "node out/src/index.js",
     "start:demo": "concurrently npm:demo:*",
     "demo:serve": "open-cli http://localhost:10230 && serve ./demo -p 10230",
-    "demo:dev": "esbuild ./demo/index.tsx --watch --format=esm --bundle --external:react --external:react-dom --external:*.json --sourcemap --outfile=./demo/index.js",
-    "build:demo": "esbuild ./demo/index.tsx --minify --format=esm --bundle --external:react --external:react-dom --external:*.json --sourcemap --outfile=./demo/index.js",
-    "demo": "node out/demo.js"
+    "demo:dev": "node ./scripts/build.mjs --dev",
+    "build:demo": "node ./scripts/build.mjs",
+    "demo": "node out/src/demo.js"
   },
   "repository": {
     "type": "git",
