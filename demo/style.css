@@ -51,11 +51,20 @@ header > nav {
   align-items: center;
   min-width: var(--min-width);
 }
-@media screen and (max-width: 1080px) {
+
+@media screen and (max-width: 768px) {
   .conditions {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+  }
+  body {
+    font-size: 12px;
+  }
+}
+@media screen and (min-width: 36em) {
+  main {
+    padding: 2em;
   }
 }
 .condition {
@@ -65,9 +74,6 @@ header > nav {
 }
 .actions {
   min-width: fit-content;
-}
-main {
-  padding: 2em;
 }
 .condition label {
   margin-right: 0.5em;
@@ -100,17 +106,17 @@ main {
   width: 100%;
   height: 8em;
 }
-.choice:not(.middle) {
+.choice {
   display: inline-flex;
   justify-content: center;
 }
 .choice svg {
   cursor: pointer;
-  width: 192px;
-  height: 192px;
-  transition: all .3s ease-in-out;
+  width: 8em;
+  height: 8em;
+  transition: all 0.3s ease-in-out;
 }
-.choice svg:hover  {
+.choice svg:hover, .choice:focus svg {
   background-color: #ced4da;
 }
 .node {
@@ -119,7 +125,8 @@ main {
   align-items: center;
   width: 100%;
 }
-.null p.info, .conclusion p.info {
+.null p.info,
+.conclusion p.info {
   height: 12em;
 }
 .compare {
@@ -139,7 +146,7 @@ code {
   padding: 0.2em 0.4em;
   margin: 0;
   background-color: var(--color-neutral-muted);
-  border-radius: 6px;
+  border-radius: 0.25em;
 }
 .weigh-history {
   display: flex;
@@ -175,8 +182,8 @@ code {
 input {
   display: block;
   width: 100%;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
+  padding: 0.375em 0.75em;
+  font-size: 1em;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
@@ -184,7 +191,7 @@ input {
   background-clip: padding-box;
   border: 1px solid #ced4da;
   appearance: none;
-  border-radius: 0.25rem;
+  border-radius: 0.25em;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 input:focus {
@@ -192,7 +199,7 @@ input:focus {
   background-color: #fff;
   border-color: #86b7fe;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+  box-shadow: 0 0 0 0.25em rgb(13 110 253 / 25%);
 }
 select {
   cursor: pointer;
@@ -203,18 +210,18 @@ select {
   word-wrap: normal;
   display: block;
   width: 100%;
-  padding: 0.375rem 2.25rem 0.375rem 0.75rem;
-  font-size: 1rem;
+  padding: 0.375em 2.25em 0.375em 0.75em;
+  font-size: 1em;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
   background-color: #fff;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
-  background-position: right 0.75rem center;
+  background-position: right 0.75em center;
   background-size: 16px 12px;
   border: 1px solid #ced4da;
-  border-radius: 0.25rem;
+  border-radius: 0.25em;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   appearance: none;
   margin-bottom: 0;
@@ -222,13 +229,13 @@ select {
 select:focus {
   border-color: #86b7fe;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+  box-shadow: 0 0 0 0.25em rgb(13 110 253 / 25%);
 }
 option {
   font-family: inherit;
   text-transform: none;
   word-wrap: normal;
-  font-size: 1rem;
+  font-size: 1em;
   line-height: 1.5;
   color: #212529;
   box-sizing: border-box;
@@ -241,10 +248,10 @@ option {
 
 .alert {
   position: relative;
-  padding: 1rem 1rem;
-  margin-bottom: 1rem;
+  padding: 1em 1em;
+  margin-bottom: 1em;
   border: 1px solid transparent;
-  border-radius: 0.25rem;
+  border-radius: 0.25em;
 }
 /**
  * @license MIT
@@ -285,7 +292,7 @@ button.submit {
   vertical-align: middle;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   line-height: 1.75;
   letter-spacing: 0.02857em;
   text-transform: uppercase;
@@ -301,7 +308,8 @@ button.submit {
   margin: 0px 0px 0px 16px;
 }
 
-button.submit:hover, button.submit:focus {
+button.submit:hover,
+button.submit:focus {
   text-decoration: none;
   background-color: #1565c0;
   box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
@@ -322,7 +330,7 @@ button.reset {
   vertical-align: middle;
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 0.875em;
   line-height: 1.75;
   letter-spacing: 0.02857em;
   text-transform: uppercase;
@@ -335,7 +343,8 @@ button.reset {
   color: #1976d2;
   margin: 0px 0px 0px 16px;
 }
-button.reset:hover, button.reset:hover {
+button.reset:hover,
+button.reset:focus {
   text-decoration: none;
   background-color: rgba(25, 118, 210, 0.04);
   border: 1px solid #1976d2;

@@ -5,7 +5,7 @@
  * This source code is licensed under the GPL-3.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import * as React from "react";
+import React, { Fragment, memo, useCallback, useLayoutEffect, useRef, useState } from "react";
 import * as ReactDOM from "react-dom/client";
 import { findSolution } from "../src/core";
 import { DefectiveDifference, Difference, NodeType, Strategy, WeighResult } from "../src/defs";
@@ -31,7 +31,7 @@ const i18n = i18nModule.default;
 document.title += ` - ${i18n["app.description"]}`;
 //#endregion
 //#region Header component
-const Header: React.FC = React.memo(() => {
+const Header: React.FC = memo(() => {
   return (
     <header>
       <nav>
@@ -89,7 +89,7 @@ interface Condition {
 const Conditions: React.FC<{
   confirm(condition: Condition): void;
   clear(): void;
-}> = ({ confirm }) => {
+}> = memo(({ confirm }) => {
   return (
     <form
       className="conditions"
@@ -147,19 +147,19 @@ const Conditions: React.FC<{
       </div>
     </form>
   );
-};
+});
 //#endregion
 //#region Products Group
-const ProductGroup: React.FC<{ products: number[] }> = ({ products }) => (
+const ProductGroup: React.FC<{ products: Iterable<number> }> = memo(({ products }) => (
   <div className="products">
-    {products.map((product, i) => (
-      <React.Fragment key={i}>
+    {[...products].map((product, i) => (
+      <Fragment key={i}>
         {!!i && <code>+</code>}
         <span className="product">P{product}</span>
-      </React.Fragment>
+      </Fragment>
     ))}
   </div>
-);
+));
 //#endregion
 
 //#region Compare component
@@ -167,7 +167,7 @@ export const Compare: React.FC<{
   lefts: Iterable<number>;
   rights: Iterable<number>;
   comparator: string;
-}> = React.memo(({ lefts: [...lefts], rights: [...rights], comparator }) => {
+}> = memo(({ lefts, rights, comparator }) => {
   return (
     <div className="compare">
       <ProductGroup products={lefts}></ProductGroup>
@@ -186,9 +186,9 @@ const diffText = {
 const getSVGByPath = (content: string): React.ReactElement => {
   const template = document.createElement("template");
   template.innerHTML = content;
-  const SVGWrapperComponent: React.FC = React.memo(() => {
-    const containerRef = React.useRef<HTMLDivElement>(null);
-    React.useLayoutEffect(() => {
+  const SVGWrapperComponent: React.FC = memo(() => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    useLayoutEffect(() => {
       const svg = template.content.cloneNode(true);
       const containerElement = containerRef.current!;
       if (!containerElement) {
@@ -269,24 +269,32 @@ const RenderNode: React.FC<{
     );
   }
   const {
-    strategy: [[...lefts], [...rights]],
+    strategy: [lefts, rights],
   } = node;
 
   return renderNode(
     <>
       <Compare lefts={lefts} rights={rights} comparator="vs"></Compare>
       <div className="choices">
-        {weighResultOptions.map(({ svg, result, position }, i) => (
-          <div
-            className={`choice ${position}`}
-            key={i}
-            onClick={() => {
-              move(node.children[result]);
-            }}
-          >
-            {svg}
-          </div>
-        ))}
+        {weighResultOptions.map(({ svg, result, position }, i) => {
+          const choose = () => {
+            move(node.children[result]);
+          };
+          return (
+            <div
+              key={i}
+              className={`choice ${position}`}
+              role={"button"}
+              tabIndex={0}
+              onClick={choose}
+              onKeyDown={(e) => {
+                e.key.toLowerCase() === "enter" && choose();
+              }}
+            >
+              {svg}
+            </div>
+          );
+        })}
       </div>
     </>,
     i18n["info.choose"],
@@ -332,7 +340,7 @@ type AppState = {
   message: string;
 };
 const App: React.FC = () => {
-  const [state, setState] = React.useState<AppState>({
+  const [state, setState] = useState<AppState>({
     node: false,
     root: false,
     message: "",
@@ -352,27 +360,26 @@ const App: React.FC = () => {
       }
       return path.reverse().map(([strategy, result]) => ({ strategy, result }));
     })();
+  const onConfirm = useCallback(({ count, times, diff }: Condition): void => {
+    const kinds = diffs(diff);
+    for (const solution of findSolution(count, times, kinds)) {
+      const foundNode = connectParent(solution);
+      setState((s) => ({ ...s, node: foundNode, root: foundNode, message: "" }));
+      return;
+    }
+    setState((s) => ({
+      ...s,
+      node: false,
+      root: false,
+      message: i18n["info.no.solution"],
+    }));
+  }, []);
+  const onClear = useCallback(() => setNode(false), []);
   return (
     <div>
       <Header></Header>
       <main>
-        <Conditions
-          confirm={({ count, times, diff }) => {
-            const kinds = diffs(diff);
-            for (const solution of findSolution(count, times, kinds)) {
-              const foundNode = connectParent(solution);
-              setState((s) => ({ ...s, node: foundNode, root: foundNode, message: "" }));
-              return;
-            }
-            setState((s) => ({
-              ...s,
-              node: false,
-              root: false,
-              message: i18n["info.no.solution"],
-            }));
-          }}
-          clear={() => setNode(false)}
-        ></Conditions>
+        <Conditions confirm={onConfirm} clear={onClear}></Conditions>
         {message && (
           <div className="alert alert-danger" role={"alert"}>
             {message}
