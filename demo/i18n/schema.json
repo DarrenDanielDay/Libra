@@ -8,6 +8,7 @@
     "actions.back": { "type": "string" },
     "label.count": { "type": "string" },
     "label.diff": { "type": "string" },
+    "label.history": { "type": "string" },
     "diff.lighter": { "type": "string" },
     "diff.unknown": { "type": "string" },
     "diff.heavier": { "type": "string" },

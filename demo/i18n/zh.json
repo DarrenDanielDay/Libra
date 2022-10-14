@@ -6,6 +6,7 @@
   "actions.back": "返回上层",
   "label.count": "产品总数",
   "label.diff": "次品偏差",
+  "label.history": "称取结果",
   "diff.heavier": "偏重",
   "diff.unknown": "未知（两者）",
   "diff.lighter": "偏轻",

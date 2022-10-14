@@ -10,9 +10,6 @@ import * as ReactDOM from "react-dom/client";
 import { findSolution } from "../src/core";
 import { DefectiveDifference, Difference, NodeType, Strategy, WeighResult } from "../src/defs";
 import { ConnectedTreeNode, connectParent } from "../src/utils";
-import { BalanceSVG } from "./balance-scale";
-import { LeftSVG } from "./balance-scale-left";
-import { RightSVG } from "./balance-scale-right";
 import "./style.css";
 //#region Start up
 const url = new URL(location.href);
@@ -186,23 +183,47 @@ const diffText = {
   [Difference.Lighter]: i18n["diff.lighter"],
   [Difference.Heavier]: i18n["diff.heavier"],
 };
+const getSVGByPath = (content: string): React.ReactElement => {
+  const template = document.createElement("template");
+  template.innerHTML = content;
+  const SVGWrapperComponent: React.FC = React.memo(() => {
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    React.useLayoutEffect(() => {
+      const svg = template.content.cloneNode(true);
+      const containerElement = containerRef.current!;
+      if (!containerElement) {
+        return;
+      }
+      containerElement.appendChild(svg);
+    }, []);
+    return <div ref={containerRef}></div>;
+  });
+  return <SVGWrapperComponent></SVGWrapperComponent>;
+};
+const [leftSVG, balanceSVG, rightSVG] = await Promise.all(
+  ["./balance-scale-left.svg", "./balance-scale.svg", "./balance-scale-right.svg"].map(async (path) => {
+    const response = await fetch(path);
+    const content = await response.text();
+    return content;
+  })
+);
 const weighResultOptions: {
   svg: JSX.Element;
   result: WeighResult;
   position: string;
 }[] = [
   {
-    svg: LeftSVG,
+    svg: getSVGByPath(leftSVG),
     result: WeighResult.Right,
     position: "left",
   },
   {
-    svg: BalanceSVG,
+    svg: getSVGByPath(balanceSVG),
     result: WeighResult.Balance,
     position: "middle",
   },
   {
-    svg: RightSVG,
+    svg: getSVGByPath(rightSVG),
     result: WeighResult.Left,
     position: "right",
   },
@@ -294,6 +315,7 @@ const WeighHistory: React.FC<{
 }> = ({ records }) => {
   return (
     <div className="weigh-history">
+      <p>{i18n["label.history"]}</p>
       {records.map(({ strategy: [lefts, rights], result }, i) => (
         <Compare key={i} lefts={lefts} rights={rights} comparator={compare(result)} />
       ))}
@@ -357,7 +379,7 @@ const App: React.FC = () => {
           </div>
         )}
         {node && <RenderNode node={node} move={setNode}></RenderNode>}
-        {weighRecords && <WeighHistory records={weighRecords}></WeighHistory>}
+        {weighRecords && !!weighRecords.length && <WeighHistory records={weighRecords}></WeighHistory>}
       </main>
     </div>
   );

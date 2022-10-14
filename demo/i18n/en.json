@@ -6,11 +6,12 @@
   "actions.back": "back to previous",
   "label.count": "Count",
   "label.diff": "Difference",
+  "label.history": "weighed results",
   "diff.heavier": "heavier",
   "diff.unknown": "unknown (both)",
   "diff.lighter": "lighter",
   "label.times": "Times",
-  "info.choose": "What's the result after weighing like this?",
+  "info.choose": "What's the result if you weigh it like this?",
   "info.no.solution": "Cannot find a strategy covering all conditions.",
   "info.impossible": "It's impossible!",
   "info.conclution": "The defective product is 'P{bad}', and it's {diff} than others."
