@@ -6,12 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 /// <reference path="../node_modules/es-modularize/dist/index.d.ts" />
-// @ts-check
 (() => {
   const query = new URL(location.href);
   const cdn = query.searchParams.get("cdn");
   const cdnRoot = cdn ? decodeURIComponent(cdn) : "https://unpkg.com";
-  // const registry = query.searchParams.get("regostry");
+  const shimsSubPath = "es-module-shims@1.6.1/dist/es-module-shims.js";
+  const shimsUrl = cdn ? `${cdnRoot}/${shimsSubPath}` : `https://ga.jspm.io/npm:${shimsSubPath}`;
   const react = ESModularize.load(`${cdnRoot}/react@18.2.0/umd/react.production.min.js`).sync().umd("React");
   const reactDOM = ESModularize.load(`${cdnRoot}/react-dom@18.2.0/umd/react-dom.production.min.js`)
     .sync()
@@ -19,8 +19,9 @@
   if (!react || !reactDOM) {
     throw 0;
   }
-  const notSupported = typeof HTMLScriptElement.supports !== "function" || !HTMLScriptElement.supports("importmap");
-  if (notSupported) {
+  const notSupported = () =>
+    typeof HTMLScriptElement.supports !== "function" || !HTMLScriptElement.supports("importmap");
+  if (notSupported()) {
     const fallback = () => {
       document.removeEventListener("DOMContentLoaded", fallback);
       console.clear();
@@ -45,23 +46,4 @@
     };
     ESModularize.build(importMap);
   }
-  /**
-const importMap = ESModularize.createProjectLoader({
-  cdnRoot: cdnRoot ? decodeURIComponent(cdnRoot) : undefined,
-  registry: registry ? decodeURIComponent(registry) : undefined,
-  nodeGlobals: {
-    process: {
-      env: {
-        NODE_ENV: "development",
-      },
-    },
-  },
-}).load(
-  {
-    react: "18.2.0",
-    "react-dom": "18.2.0",
-  },
-  ["react", "react-dom/client"]
-);
-*/
 })();

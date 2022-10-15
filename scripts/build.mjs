@@ -10,7 +10,7 @@ import { readFile } from "fs/promises";
 const isDev = process.argv.includes("--dev");
 /** @type {esbuild.BuildOptions} */
 const sharedConfig = {
-  entryPoints: ["./demo/index.tsx"],
+  entryPoints: ["./demo/index.tsx", "./demo/setup.ts"],
   plugins: [
     {
       name: "inject-import-alias",
@@ -33,16 +33,18 @@ const sharedConfig = {
   minify: !isDev,
   format: "esm",
   external: ["react", "react-dom", "*.json"],
-  outfile: "./demo/index.js",
+  outdir: "./demo/",
 };
-// build for import map
-await esbuild.build(sharedConfig);
+// build setup script & index with import map
+const setUpIndex = esbuild.build(sharedConfig);
 
-if (!isDev) {
-  // build for no import map support browser
-  await esbuild.build({
-    ...sharedConfig,
-    external: [],
-    outfile: "./demo/index.noimportmap.js",
-  });
-}
+// build for no import map support browser
+const noImportMap = esbuild.build({
+  ...sharedConfig,
+  entryPoints: ["./demo/index.tsx"],
+  external: [],
+  outdir: undefined,
+  outfile: "./demo/index.noimportmap.js",
+});
+
+await Promise.all([setUpIndex, noImportMap]);
