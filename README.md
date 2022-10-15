@@ -2,6 +2,14 @@
 
 一个称次品问题的求解模型
 
+## 在线示例 
+
+[简体中文](https://darrendanielday.github.io/Libra)
+
+[English](https://darrendanielday.github.io/Libra?lang=en)
+
+[饿了么CDN加速](https://darrendanielday.github.io/Libra?cdn=https%3A%2F%2Fgithub.elemecdn.com)
+
 ## 运行 Demo
 
 环境需求：[`Node.JS 12+`](https://nodejs.org/)

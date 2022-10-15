@@ -12,32 +12,25 @@
   const cdnRoot = cdn ? decodeURIComponent(cdn) : "https://unpkg.com";
   const shimsSubPath = "es-module-shims@1.6.1/dist/es-module-shims.js";
   const shimsUrl = cdn ? `${cdnRoot}/${shimsSubPath}` : `https://ga.jspm.io/npm:${shimsSubPath}`;
-  const react = ESModularize.load(`${cdnRoot}/react@18.2.0/umd/react.production.min.js`).sync().umd("React");
-  const reactDOM = ESModularize.load(`${cdnRoot}/react-dom@18.2.0/umd/react-dom.production.min.js`)
-    .sync()
-    .umd("ReactDOM");
-  if (!react || !reactDOM) {
-    throw 0;
-  }
-  const notSupported = () =>
-    typeof HTMLScriptElement.supports !== "function" || !HTMLScriptElement.supports("importmap");
-  if (notSupported()) {
-    const fallback = () => {
-      document.removeEventListener("DOMContentLoaded", fallback);
-      console.clear();
-      const script = document.head.querySelector(`script[type="module"]`);
-      if (script instanceof HTMLScriptElement) {
-        document.head.removeChild(script);
-        const altScript = document.createElement("script");
-        altScript.src = "./index.noimportmap.js";
-        altScript.type = "module";
-        document.body.appendChild(altScript);
-      } else {
-        console.log("?");
-      }
-    };
-    document.addEventListener("DOMContentLoaded", fallback);
-  } else {
+  const esModularize = `${cdnRoot}/es-modularize@2.0.1/dist/browser.bundle.min.js`;
+  const runScript = (url: string, callback: (() => void) | null, asModule?: boolean) => {
+    const script = document.createElement("script");
+    script.src = url;
+    if (asModule) {
+      script.type = "module";
+    }
+    (document.currentScript ?? document.body.querySelector("*"))?.after(script);
+    script.onload = callback;
+  };
+  const aliasReact = async () => {
+    const reactP = ESModularize.load(`${cdnRoot}/react@18.2.0/umd/react.production.min.js`).async();
+    const reactDomP = ESModularize.load(`${cdnRoot}/react-dom@18.2.0/umd/react-dom.production.min.js`).async();
+    const [reactC, reactDomC] = await Promise.all([reactP, reactDomP]);
+    const react = reactC.umd("React");
+    const reactDOM = reactDomC.umd("ReactDOM");
+    if (!react || !reactDOM) {
+      return;
+    }
     const importMap = {
       imports: {
         react: react,
@@ -45,5 +38,25 @@
       },
     };
     ESModularize.build(importMap);
+  };
+  const init = () => {
+    runScript(esModularize, () => {
+      aliasReact().then(() => {
+        runScript("./index.js", null, true);
+      });
+    });
+  };
+  const notSupported = () =>
+    typeof HTMLScriptElement.supports !== "function" || !HTMLScriptElement.supports("importmap");
+  if (notSupported()) {
+    runScript(shimsUrl, () => {
+      if (notSupported()) {
+        runScript("./index.noimportmap.js", null, true);
+      } else {
+        init();
+      }
+    });
+  } else {
+    init();
   }
 })();
