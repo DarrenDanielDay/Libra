@@ -1,5 +1,9 @@
 # Libra
 
+<div align="center">
+    <img src="./demo/icon.svg" width="192px">
+</div>
+
 一个称次品问题的求解模型
 
 ## 在线示例 
