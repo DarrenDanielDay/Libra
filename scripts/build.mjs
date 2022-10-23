@@ -41,6 +41,12 @@ const setUpIndex = esbuild.build(sharedConfig);
 // build for no import map support browser
 const noImportMap = esbuild.build({
   ...sharedConfig,
+  banner: {
+    js: "(async()=>{",
+  },
+  footer: {
+    js: "})()",
+  },
   entryPoints: ["./demo/index.tsx"],
   external: [],
   outdir: undefined,

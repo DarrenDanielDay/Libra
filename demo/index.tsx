@@ -164,7 +164,7 @@ const ProductGroup: React.FC<{ products: Iterable<number> }> = memo(({ products 
 //#endregion
 
 //#region Compare component
-export const Compare: React.FC<{
+const Compare: React.FC<{
   lefts: Iterable<number>;
   rights: Iterable<number>;
   comparator: string;
