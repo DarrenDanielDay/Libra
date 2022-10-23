@@ -2,7 +2,7 @@
   "$schema": "./schema.json",
   "app.description": "一个称次品问题的求解模型",
   "actions.confirm": "确认",
-  "actions.clear": "清空",
+  "actions.reset": "重置",
   "actions.back": "返回上层",
   "label.count": "产品总数",
   "label.diff": "次品偏差",

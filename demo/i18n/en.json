@@ -2,7 +2,7 @@
   "$schema": "./schema.json",
   "app.description": "a solution model for weighing problems",
   "actions.confirm": "confirm",
-  "actions.clear": "clear",
+  "actions.reset": "reset",
   "actions.back": "back to previous",
   "label.count": "Count",
   "label.diff": "Difference",

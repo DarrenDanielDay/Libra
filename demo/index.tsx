@@ -88,8 +88,8 @@ interface Condition {
 }
 const Conditions: React.FC<{
   confirm(condition: Condition): void;
-  clear(): void;
-}> = memo(({ confirm }) => {
+  reset(): void;
+}> = memo(({ confirm, reset }) => {
   return (
     <form
       className="conditions"
@@ -112,6 +112,7 @@ const Conditions: React.FC<{
           confirm(formValue as Condition);
         }
       }}
+      onReset={reset}
     >
       <div className="condition">
         <label htmlFor="count">{i18n["label.count"]}</label>
@@ -142,7 +143,7 @@ const Conditions: React.FC<{
           {i18n["actions.confirm"]}
         </button>
         <button type={"reset"} className="reset">
-          {i18n["actions.clear"]}
+          {i18n["actions.reset"]}
         </button>
       </div>
     </form>
@@ -346,7 +347,7 @@ const App: React.FC = () => {
     message: "",
   });
   const { node, root, message } = state;
-  const setNode = (newNode: CurrentNode) => setState((s) => ({ ...s, node: newNode }));
+  const setNode = useCallback((newNode: CurrentNode) => setState((s) => ({ ...s, node: newNode })), []);
   const weighRecords =
     node &&
     history &&
@@ -374,12 +375,12 @@ const App: React.FC = () => {
       message: i18n["info.no.solution"],
     }));
   }, []);
-  const onClear = useCallback(() => setNode(false), []);
+  const onClear = useCallback(() => setState({ message: "", node: false, root: false }), []);
   return (
     <div>
       <Header></Header>
       <main>
-        <Conditions confirm={onConfirm} clear={onClear}></Conditions>
+        <Conditions confirm={onConfirm} reset={onClear}></Conditions>
         {message && (
           <div className="alert alert-danger" role={"alert"}>
             {message}
