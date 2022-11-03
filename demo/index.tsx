@@ -119,7 +119,7 @@ const Conditions: React.FC<{
         <input id="count" name="count" type={"number"} defaultValue={initCount} required></input>
       </div>
       <div className="condition">
-        <label htmlFor="count">{i18n["label.times"]}</label>
+        <label htmlFor="times">{i18n["label.times"]}</label>
         <input id="times" name="times" type={"number"} defaultValue={initTimes} required></input>
       </div>
       <div className="condition">
