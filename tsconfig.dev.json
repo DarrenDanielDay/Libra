@@ -8,9 +8,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
     "watch": true,
-    "outDir": "out/src"
   },
   "include": ["src"]
 }

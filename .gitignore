@@ -5,10 +5,10 @@
 # For this project
 out
 *.output.json
-demo/*.js
-demo/*.js.map
-demo/*.css
-demo/*.css.map
+demo/**/*.js
+demo/**/*.js.map
+demo/**/*.css
+demo/**/*.css.map
 !demo/style.css
 # Logs
 logs

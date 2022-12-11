@@ -9,16 +9,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
     "outDir": "out",
     "esModuleInterop": true,
     "allowJs": true,
-    "jsx": "react",
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src", "demo"]
+  "include": ["src", "demo"],
+  "exclude": ["demo/hyplate-example"]
 }

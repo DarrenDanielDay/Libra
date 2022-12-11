@@ -5,10 +5,10 @@
  * This source code is licensed under the GPL-3.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { findSolution } from "./core";
-import { DefectiveDifference, Difference } from "./defs";
+import { findSolution } from "./core.js";
+import { DefectiveDifference, Difference } from "./defs.js";
 import { writeFile } from "fs/promises";
-import { unknownDifferences } from "./utils";
+import { unknownDifferences } from "./utils.js";
 import { promisify } from "util";
 import { exec } from "child_process";
 async function runCase(n: number, k: number, differences: DefectiveDifference[]) {

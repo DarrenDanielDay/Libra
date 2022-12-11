@@ -16,7 +16,7 @@ import {
   StrategyNode,
   TreeNode,
   WeighResult,
-} from "./defs";
+} from "./defs.js";
 
 export function lean(d: Difference): WeighResult {
   return d === Difference.Lighter ? WeighResult.Left : WeighResult.Right;

@@ -5,8 +5,8 @@
  * This source code is licensed under the GPL-3.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import { Difference, NodeType, Product, TreeNode, Strategy, Case, WeighResult, DefectiveDifference } from "./defs";
-import { cases, products, weigh } from "./utils";
+import { Difference, NodeType, Product, TreeNode, Strategy, Case, WeighResult, DefectiveDifference } from "./defs.js";
+import { cases, products, weigh } from "./utils.js";
 
 export function* findSolution(n: number, k: number, diffectiveDifferences: DefectiveDifference[]): Generator<TreeNode> {
   const allProducts = products(n);
