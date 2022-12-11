@@ -29,7 +29,9 @@ jobs:
         run: npm install
 
       - name: Build Project
-        run: npm run build:demo
+        run: |
+          npm run build:core
+          npm run build:demo
 
       - name: Deploy Github Pages
         uses: crazy-max/ghaction-github-pages@v2.5.0
