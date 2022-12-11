@@ -1,0 +1,351 @@
+/**
+ * @license GPL-3.0-or-later
+ * Copyright (C) 2022  DarrenDanielDay <Darren_Daniel_Day@hotmail.com>
+ *
+ * This source code is licensed under the GPL-3.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+body {
+  --border-color: #e8e8eb;
+  --min-width: 32em;
+  word-break: keep-all;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  min-width: var(--min-width);
+  line-height: 1.5em;
+  box-sizing: border-box;
+}
+.logo {
+  width: 2em;
+  height: 2em;
+}
+
+.app-text {
+  width: 5em;
+  height: 2em;
+}
+
+.community {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+header > nav {
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.1);
+  padding: 8px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.menu {
+  display: flex;
+  align-items: center;
+}
+.menu .menu-item {
+  margin: 0 0.25em;
+}
+.conditions {
+  display: flex;
+  align-items: center;
+  min-width: var(--min-width);
+}
+
+@media screen and (max-width: 768px) {
+  .conditions {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  body {
+    font-size: 12px;
+  }
+}
+@media screen and (min-width: 36em) {
+  main {
+    padding: 2em;
+  }
+}
+.condition {
+  margin: 0.25em 1em;
+  display: flex;
+  align-items: baseline;
+}
+.actions {
+  min-width: fit-content;
+}
+.condition label {
+  margin-right: 0.5em;
+  width: max-content;
+}
+.condition label::after {
+  content: ":";
+}
+.products {
+  display: inline-flex;
+  width: 50%;
+  flex-wrap: wrap;
+  flex-shrink: 1;
+  justify-content: center;
+  align-items: center;
+}
+.product {
+  display: inline-block;
+  box-sizing: border-box;
+  border: 2px solid var(--border-color);
+  height: 2em;
+  margin: 0.25em;
+  border-radius: 4px;
+  padding: 0.25em;
+}
+.choices {
+  display: flex;
+  min-width: var(--min-width);
+  justify-content: space-around;
+  width: 100%;
+  height: 8em;
+}
+.choice {
+  display: inline-flex;
+  justify-content: center;
+}
+.choice svg {
+  cursor: pointer;
+  width: 8em;
+  height: 8em;
+  transition: all 0.3s ease-in-out;
+}
+.choice svg:hover, .choice:focus svg {
+  background-color: #ced4da;
+}
+.node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.null p.info,
+.conclusion p.info {
+  height: 12em;
+}
+.compare {
+  display: flex;
+  grid-template-columns: 1fr 2em 1fr;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+code {
+  --color-fg-default: #24292f;
+  --color-neutral-muted: rgba(175, 184, 193, 0.2);
+  color: var(--color-fg-default);
+  word-wrap: break-word;
+  box-sizing: border-box;
+  line-height: 1em;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  background-color: var(--color-neutral-muted);
+  border-radius: 0.25em;
+}
+.weigh-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+/**
+ * @license MIT
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2011-2022 Twitter, Inc.
+ * Copyright (c) 2011-2022 The Bootstrap Authors
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+input {
+  display: block;
+  width: 100%;
+  padding: 0.375em 0.75em;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  appearance: none;
+  border-radius: 0.25em;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+input:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25em rgb(13 110 253 / 25%);
+}
+select {
+  cursor: pointer;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: inherit;
+  text-transform: none;
+  word-wrap: normal;
+  display: block;
+  width: 100%;
+  padding: 0.375em 2.25em 0.375em 0.75em;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75em center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25em;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  appearance: none;
+  margin-bottom: 0;
+}
+select:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25em rgb(13 110 253 / 25%);
+}
+option {
+  font-family: inherit;
+  text-transform: none;
+  word-wrap: normal;
+  font-size: 1em;
+  line-height: 1.5;
+  color: #212529;
+  box-sizing: border-box;
+}
+.alert-danger {
+  color: #842029;
+  background-color: #f8d7da;
+  border-color: #f5c2c7;
+}
+
+.alert {
+  position: relative;
+  padding: 1em 1em;
+  margin-bottom: 1em;
+  border: 1px solid transparent;
+  border-radius: 0.25em;
+}
+/**
+ * @license MIT
+ * The MIT License (MIT)
+ * 
+ * Copyright (c) 2014 Call-Em-All
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+button.submit {
+  text-size-adjust: 100%;
+  color-scheme: light;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  outline: 0;
+  border: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875em;
+  line-height: 1.75;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  min-width: 64px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  color: #fff;
+  background-color: #1976d2;
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  margin: 0px 0px 0px 16px;
+}
+
+button.submit:hover,
+button.submit:focus {
+  text-decoration: none;
+  background-color: #1565c0;
+  box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+}
+
+button.reset {
+  text-size-adjust: 100%;
+  color-scheme: light;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-sizing: border-box;
+  background-color: transparent;
+  outline: 0;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875em;
+  line-height: 1.75;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  min-width: 64px;
+  padding: 5px 15px;
+  border-radius: 4px;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border: 1px solid rgba(25, 118, 210, 0.5);
+  color: #1976d2;
+  margin: 0px 0px 0px 16px;
+}
+button.reset:hover,
+button.reset:focus {
+  text-decoration: none;
+  background-color: rgba(25, 118, 210, 0.04);
+  border: 1px solid #1976d2;
+}

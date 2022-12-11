@@ -1,0 +1,10 @@
+{
+  "name": "@libra/demo",
+  "version": "1.0.0",
+  "description": "Demo for Libra.",
+  "type": "module",
+  "license": "MIT",
+  "dependencies": {
+    "hyplate": "^0.1.4"
+  }
+}
